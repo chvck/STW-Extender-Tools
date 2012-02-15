@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Deluge in Chrome : Configuration</title>
+    
+    <script src="js/libs/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/options.js" type="text/javascript" charset="utf-8"></script>
+    
+    <link rel="stylesheet" href="css/master.css" type="text/css" />
+    <link rel="stylesheet" href="css/chrome.css" type="text/css" />
+    <style type="text/css" media="screen">
+      body { width: 100%; }
+      .buttons { margin: 10px 0 0 0; }
+      .buttons .left { float: left; }
+      .buttons .right { float: right; }
+      #content { width: 790px; margin-left: auto; margin-right: auto;
+                border: 1px solid #CCC; padding: 5px; }
+      #options form { width: 500px; margin-left: auto; margin-right: auto;}
+    </style>
+  </head>
+
+  <body>
+    <div id="content">
+      <div id="header">
+        <div id="logo">
+          <a href="#" title="Go to Deluge WebUI!">
+            <span class="title">Deluge</span>
+            <span class="subtitle">Deluge torrent information in Chrome</span>
+          </a>
+        </div>
+        <div class="clr"></div>
+      </div>
+  
+      <div id="options">
+        <div class="chrome-header">
+          <h2>Configuration</h2>
+        </div>
+        <div class="chrome-sub-header">
+          <p>This extension requires an accessible version of Deluge web interface to be running. Please refer to the <a href="http://deluge-torrent.org/" target="_blank">Deluge documentation</a> on how to get this working.</p>
+          <p>In order to connect to the web interface with need to know some details about the web interface. The address used to access the interface (http://address:port) and finally the password used to login.</p>
+        </div>
+  
+        <div id="status-message"></div>
+  
+        <form class="nice-form" style="width: 500px">
+          <fieldset>
+            <legend>Options</legend>
+            <p>
+              <input type="checkbox" name="enable_hide_users" id="enable_hide_users" value="1" />
+              <label class="normal" for="enable_hide_users"> Enable blocking users (hiding posts)? </label>
+            </p>
+            
+            <p>
+              <input type="checkbox" name="enable_show_posted" id="enable_show_posted" value="1" />
+              <label class="normal" for="enable_show_posted"> Enable showing that a post was made (instead of totally hiding)? </label>
+            </p>
+            
+            <p>
+              <label>Blocked users:</label>
+              <textarea name="users" id="users" style="width: 300px" rows="2"></textarea>
+            </p>
+   
+            <p>
+              <input type="checkbox" name="enable_hide_threads" id="enable_hide_threads" value="0" />
+              <label class="normal" for="enable_hide_threads"> Enable hiding blocked users threads? </label>
+            </p>
+            
+            <p>
+              <input type="checkbox" name="enable_easy_quoting" id="enable_easy_quoting" value="0" />
+              <label class="normal" for="enable_easy_quoting"> Enable easy quoting? </label>
+            </p>
+          </fieldset>
+  
+          <div class="buttons">
+            <div class="left">
+              <button type="submit" class="cancel">Cancel</button>
+            </div>
+            <div class="right">
+              <button type="submit" class="save">Save</button>
+              <button type="submit" class="apply">Apply</button>
+            </div>
+            <div class="clr"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

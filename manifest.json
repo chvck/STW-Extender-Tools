@@ -1,0 +1,25 @@
+{
+  "name": "Singletrack World Forum Extender Tools",
+  "version": "1.0",
+  "description": "Adds some useful functionality to the stw forum such as user ignoring and easy-quoting",
+  "icons": {
+    "48": "img/48.png",
+    "64": "img/64.png",
+    "32": "img/32.png",
+    "16": "img/16.png"
+  },
+  "browser_action": {
+    "default_icon": "img/no.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*"],
+      "js": ["js/libs/jquery-1.7.1.min.js", "js/add_tools.js"]
+    }
+  ],
+  "background_page": "background.html",
+  "options_page": "options.html",
+  "permissions": [
+     "http://*/*", "contextMenus"
+  ]
+}
