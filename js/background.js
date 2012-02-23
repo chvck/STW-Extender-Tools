@@ -7,17 +7,20 @@
 // Any requests send via chrome ext messaging system.
 chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
     if (request.msg === 'get_options') {
-        sendResponse({msg: 'error', result: {
+        sendResponse({msg: 'ok', result: {
             'users' : localStorage.blockedUsers
             , 'enableHideUsers' : localStorage.enableHideUsers
             , 'enableHideThreads' : localStorage.enableHideThreads
             , 'showSomeonePosted' : localStorage.showSomeonePosted
+            , 'enableEasyQuoting' : localStorage.enableEasyQuoting
         }, error: null});
         return;
     } else if (request.msg === 'hide_user') {
         users = localStorage.users;
         localStorage.blockedUsers = localStorage.blockedUsers + ',' + request.username;
-        sendResponse(true);
+        sendResponse({msg: 'ok', result: {
+            'users' : localStorage.blockedUsers
+        }, error: null});
         return;
     }
 
