@@ -2,6 +2,10 @@ jQuery(document).ready(function ($) {
     var users
         , showText = "<p class='showLink' style='cursor:pointer; color:#3F6895; text-decoration:underline;'>Show this post</p>"
         ,showSomeonePosted;
+
+    function stringToBool(value) {
+        return value === 'true';
+    }
         
     function hidePosts() {
         $('.threadauthor strong').each(function () {
@@ -13,7 +17,7 @@ jQuery(document).ready(function ($) {
                     $parent.hide();
                     $parent.after(showText);
                 } else {
-                    $post.hide();
+                    $parent.hide();
                 }
             }
         });
@@ -69,15 +73,15 @@ jQuery(document).ready(function ($) {
     
     chrome.extension.sendRequest({msg: 'get_options'}, function (response) {
         users = response.result.users;
-        showSomeonePosted = response.result.showSomeonePosted;
+        showSomeonePosted = stringToBool(response.result.showSomeonePosted);
         var isFrontPage = document.URL.indexOf('forum/topic/') === -1 ? true : false;
-        if (response.result.enableHideUsers && users && !isFrontPage) {
+        if (stringToBool(response.result.enableHideUsers) && users && !isFrontPage) {
             hidePosts();
         }
-        if (response.result.enableHideThreads && users && isFrontPage) {
+        if (stringToBool(response.result.enableHideThreads) && users && isFrontPage) {
             hideThreads();
         }
-        if (response.result.enableEasyQuoting) {
+        if (stringToBool(response.result.enableEasyQuoting)) {
             addEasyQuotes();
         }
     });
