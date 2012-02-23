@@ -70,10 +70,11 @@ jQuery(document).ready(function ($) {
     chrome.extension.sendRequest({msg: 'get_options'}, function (response) {
         users = response.result.users;
         showSomeonePosted = response.result.showSomeonePosted;
-        if (response.result.enableHideUsers && users) {
+        var isFrontPage = document.URL.indexOf('forum/topic/') === -1 ? true : false;
+        if (response.result.enableHideUsers && users && !isFrontPage) {
             hidePosts();
         }
-        if (response.result.enableHideThreads && users) {
+        if (response.result.enableHideThreads && users && isFrontPage) {
             hideThreads();
         }
         if (response.result.enableEasyQuoting) {
