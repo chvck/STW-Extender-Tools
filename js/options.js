@@ -47,12 +47,13 @@ $(function () {
             , messageText = ''
             , $message = $('#status-message');
 
-        if (users) {
-            if (localStorage.blockedUsers !== users) {
-                message.push('Blocked users updated.');
-            }
-            localStorage.blockedUsers = users;
+            
+
+        if (localStorage.blockedUsers !== users) {
+            message.push('Blocked users updated.');
         }
+        localStorage.blockedUsers = users;
+
                 
         if ($hideUsersChecked && String($hideUsersChecked) !== hideUsers) {
             message.push('Block users enabled!');
