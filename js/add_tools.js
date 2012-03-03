@@ -61,9 +61,11 @@ jQuery(document).ready(function ($) {
         $('.easyQuote').live('click', function () {
             var $parent = $(this).parent().parent().parent()
                 , $post = $parent.children('.post')
-                , quote;        
-
-            quote = '[quote]' + $post.text() + '[/quote]';
+				, $tmp = $(this).parent().parent().children("strong")
+                , quote;
+				
+			$poster = $tmp.text();
+            quote = '[quote='+$poster+']' + $post.text() + '[/quote]';
             $('#post_content').val(quote);
             
             document.getElementById('postform').scrollIntoView();
@@ -75,7 +77,7 @@ jQuery(document).ready(function ($) {
         users = response.result.users;
         showSomeonePosted = stringToBool(response.result.showSomeonePosted);
         var isFrontPage = document.URL.indexOf('forum/topic/') === -1 ? true : false;
-        if (stringToBool(response.result.enableHideUsers) && users && !isFrontPage) {
+        if (stringToBool(response.result.enableHideUsers) && !isFrontPage) {
             hidePosts();
         }
         if (stringToBool(response.result.enableHideThreads) && users && isFrontPage) {
