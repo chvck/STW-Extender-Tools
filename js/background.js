@@ -13,10 +13,10 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
             , 'enableHideThreads' : localStorage.enableHideThreads
             , 'showSomeonePosted' : localStorage.showSomeonePosted
             , 'enableEasyQuoting' : localStorage.enableEasyQuoting
+			, 'quoteVerb'		  : localStorage.quoteVerb
         }, error: null});
         return;
     } else if (request.msg === 'hide_user') {
-        users = localStorage.users;
         localStorage.blockedUsers = localStorage.blockedUsers + ',' + request.username;
         sendResponse({msg: 'ok', result: {
             'users' : localStorage.blockedUsers
