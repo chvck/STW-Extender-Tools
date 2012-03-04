@@ -3,7 +3,8 @@ $(function () {
         , $hideUsers = $('#enable_hide_users')
         , $showPosted = $('#enable_show_posted')
         , $hideThreads = $('#enable_hide_threads')
-        , $easyQuoting = $('#enable_easy_quoting');
+        , $easyQuoting = $('#enable_easy_quoting')
+		, $quoteVerb = $('#quoteVerb');
 
     function restoreOptions() {
         $users.val(localStorage.blockedUsers);
@@ -31,6 +32,8 @@ $(function () {
         } else {
             $easyQuoting.removeAttr('checked');
         }
+		
+		$quoteVerb.val(localStorage.quoteVerb);
     }
 
     function saveOptions() {
@@ -40,6 +43,7 @@ $(function () {
             , $showPostedChecked = $showPosted.is(':checked')
             , $hideThreadsChecked = $hideThreads.is(':checked')
             , $easyQuotingChecked = $easyQuoting.is(':checked')
+			, quoteVerb = $quoteVerb.val()
             , hideUsers = localStorage.enableHideUsers
             , showPosted = localStorage.showSomeonePosted
             , hideThreads = localStorage.enableHideThreads
@@ -83,6 +87,12 @@ $(function () {
             message.push('Easy quoting disabled!');
         }
         localStorage.enableEasyQuoting = $easyQuotingChecked;  
+		
+		if (localStorage.quoteVerb !== quoteVerb) {
+            message.push('Quotation verb updated!');
+        }
+		localStorage.quoteVerb = quoteVerb;  
+		
 
         function hideMessage() {
             $message.fadeOut();
