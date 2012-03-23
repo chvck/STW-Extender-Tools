@@ -80,6 +80,10 @@ jQuery(document).ready(function ($) {
     
     chrome.extension.sendRequest({msg: 'get_options'}, function (response) {
         users = response.result.users;
+        if (!users)
+        {
+            users = [];
+        }
         showSomeonePosted = stringToBool(response.result.showSomeonePosted);
 		quoteVerb = response.result.quoteVerb;
         var isFrontPage = document.URL.indexOf('forum/topic/') === -1 ? true : false;
