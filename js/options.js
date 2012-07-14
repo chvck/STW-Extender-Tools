@@ -4,6 +4,8 @@ $(function () {
         , $showPosted = $('#enable_show_posted')
         , $hideThreads = $('#enable_hide_threads')
         , $easyQuoting = $('#enable_easy_quoting')
+		, $addSignature = $('#enable_signature')
+		, $signature = $('#signature')
 		, $quoteVerb = $('#quoteVerb');
 
     function restoreOptions() {
@@ -34,6 +36,14 @@ $(function () {
         }
 		
 		$quoteVerb.val(localStorage.quoteVerb);
+		
+		if (localStorage.enableSignature === 'true') {
+            $addSignature.attr('checked', 'checked');
+        } else {
+            $addSignature.removeAttr('checked');
+        }
+		
+		$signature.val(localStorage.signature);
     }
 
     function saveOptions() {
@@ -43,11 +53,14 @@ $(function () {
             , $showPostedChecked = $showPosted.is(':checked')
             , $hideThreadsChecked = $hideThreads.is(':checked')
             , $easyQuotingChecked = $easyQuoting.is(':checked')
+			, $addSignatureChecked = $addSignature.is(':checked')
 			, quoteVerb = $quoteVerb.val()
             , hideUsers = localStorage.enableHideUsers
             , showPosted = localStorage.showSomeonePosted
             , hideThreads = localStorage.enableHideThreads
             , easyQuoting = localStorage.enableEasyQuoting
+			, addSignature = localStorage.enableSignature
+			, signature = $signature.val()
             , messageText = ''
             , $message = $('#status-message');
 
@@ -92,6 +105,18 @@ $(function () {
             message.push('Quotation verb updated!');
         }
 		localStorage.quoteVerb = quoteVerb;  
+		
+		if ($addSignatureChecked && String($addSignatureChecked) !== addSignature) {
+            message.push('Add Signature enabled!');
+        } else if (String($addSignatureChecked) !== addSignature) {
+            message.push('Add Signature disabled!');
+        }
+        localStorage.enableSignature = $addSignatureChecked;  
+		
+		if (localStorage.signature !== signature) {
+            message.push('Signature updated!');
+        }
+		localStorage.signature = signature; 
 		
 
         function hideMessage() {
