@@ -13,7 +13,9 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
             , 'enableHideThreads' : localStorage.enableHideThreads
             , 'showSomeonePosted' : localStorage.showSomeonePosted
             , 'enableEasyQuoting' : localStorage.enableEasyQuoting
+			, 'enableSignature'   : localStorage.enableSignature
 			, 'quoteVerb'		  : localStorage.quoteVerb
+			, 'signature'		  : localStorage.signature
         }, error: null});
         return;
     } else if (request.msg === 'hide_user') {
@@ -22,7 +24,12 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
             'users' : localStorage.blockedUsers
         }, error: null});
         return;
-    }
+    } else if (request.msg === 'unblock_user') {
+        localStorage.blockedUsers = localStorage.blockedUsers.replace( ',' + request.username, "");
+        sendResponse({msg: 'ok', result: {
+            'users' : localStorage.blockedUsers
+        }, error: null});	
+	}
 
     // We need to send a reponse, even if it's empty.
     sendResponse({msg: 'error', result: null, error: 'nothing called!'});

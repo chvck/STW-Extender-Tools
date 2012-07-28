@@ -1,8 +1,9 @@
 jQuery(document).ready(function ($) {
     var users
-        , showText = "<p class='showLink' style='cursor:pointer; color:#3F6895; text-decoration:underline;'>Show this post</p>"
+        , showText = "<p class='showLink' style='cursor:pointer; color:#333; text-decoration:underline;'>Show this post</p>"
         ,showSomeonePosted
-		,quoteVerb;
+		,quoteVerb
+		,signature;
 
     function stringToBool(value) {
         return value === 'true';
@@ -11,16 +12,21 @@ jQuery(document).ready(function ($) {
     function hidePosts() {
         $('.threadauthor strong').each(function () {
             var $parent = $(this).parent().parent()
-                , $post = $parent.children('.post');
+                , $post = $parent.children('.post')
+				, user = $(this).text();
             
-            if (users.indexOf($(this).text()) !== -1) {
-                if (showSomeonePosted) {
+            if (users.indexOf(user) !== -1) {
+				$(this).parent().children('small').append(" - <span class='unblockUser' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Unblock User</span>");
+				if (showSomeonePosted) {
                     $parent.hide();
-                    $parent.after(showText);
+                    $parent.after("<p class='showLink' style='cursor:pointer; color:#333; text-decoration:underline;'>Show post from " + user + "</p" );
                 } else {
                     $parent.hide();
                 }
-            }
+				
+            } else {
+				$(this).parent().children('small').append(" - <span class='hideUser' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Block User</span>");
+			}
         });
             
         $('.showLink').live('click', function () {
@@ -28,7 +34,6 @@ jQuery(document).ready(function ($) {
             $(this).remove();
         });
 
-        $('.threadauthor small').append(" - <span class='hideUser' style='display:inline; cursor:pointer; color:#3F6895; text-decoration:underline;'>Block User</span>");
      
         $('.hideUser').live('click', function () {
             var user = $(this).parent().siblings('strong').text();
@@ -41,11 +46,20 @@ jQuery(document).ready(function ($) {
                 , $post = $parent.children('.post');
             if (showSomeonePosted) {
                 $parent.fadeOut();
-                $parent.after(showText);
+                $parent.after("<p class='showLink' style='cursor:pointer; color:#333; text-decoration:underline;'>Show post from " + user + "</p" );
             } else {
                 $post.fadeOut();
             }
-        });  
+        });
+		
+        $('.unblockUser').live('click', function () {
+            var user = $(this).parent().siblings('strong').text();
+            if (users.indexOf(user) != -1) {
+                chrome.extension.sendRequest({msg: 'unblock_user', username: user}, function (response) {
+                    users = response.result.users;              
+                });
+			}
+        });		
     }
    
     function hideThreads() {
@@ -57,7 +71,7 @@ jQuery(document).ready(function ($) {
     }
 
     function addEasyQuotes() {
-        $('.threadauthor small').append(" - <span class='easyQuote' style='display:inline; cursor:pointer; color:#3F6895; text-decoration:underline;'>Quote</span>");
+        $('.threadauthor small').append(" - <span class='easyQuote' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Quote</span>");
             
         $('.easyQuote').live('click', function () {
             var $parent = $(this).parent().parent().parent()
@@ -75,7 +89,18 @@ jQuery(document).ready(function ($) {
     }
 
 	function backToForumTops() {
-		$('p.rss-link').after ( "Return to <a href=\"http://singletrackworld.com/forum/\">Overview</a> <a href=\"http://singletrackworld.com/forum/forum/bike-chat\">Bike Forum</a> <a href=\"http://singletrackworld.com/forum/forum/off-topic\">Chat Forum</a>" );
+		$('p.rss-link').after ( "Return to <a href=\"/forum/\">Overview</a> <a href=\"/forum/forum/bike-chat\">Bike Forum</a> <a href=\"/forum/forum/off-topic\">Chat Forum</a>" );
+	}
+	
+	function addSignature() {
+	
+		if ( signature != null && signature != '') {
+			$('#postformsub').click(function () {
+				var  $form = $(this).parent().parent().parent()
+					,$text = $form.find('#post_content').val();
+				$('#post_content').val($text + '\n' + signature);
+			});
+		}
 	}
     
     chrome.extension.sendRequest({msg: 'get_options'}, function (response) {
@@ -85,6 +110,7 @@ jQuery(document).ready(function ($) {
         if (quoteVerb === undefined) {
             quoteVerb = 'said';
         }
+		signature = response.result.signature;
         var isFrontPage = document.URL.indexOf('forum/topic/') === -1 ? true : false;
         if (stringToBool(response.result.enableHideUsers) && users && !isFrontPage) {
             hidePosts();
@@ -95,6 +121,10 @@ jQuery(document).ready(function ($) {
         if (stringToBool(response.result.enableEasyQuoting)) {
             addEasyQuotes();
         }
+		if (stringToBool(response.result.enableSignature)) {
+			addSignature();
+        }
 		backToForumTops();
+
     });
 });
