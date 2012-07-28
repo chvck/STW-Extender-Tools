@@ -93,7 +93,6 @@ jQuery(document).ready(function ($) {
 	}
 	
 	function addSignature() {
-	
 		if ( signature != null && signature != '') {
 			$('#postformsub').click(function () {
 				var  $form = $(this).parent().parent().parent()
