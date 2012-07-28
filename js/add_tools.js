@@ -93,7 +93,10 @@ jQuery(document).ready(function ($) {
 	}
 	
 	function addSignature() {
+<<<<<<< .merge_file_BkSWVf
 	
+=======
+>>>>>>> .merge_file_B3iief
 		if ( signature != null && signature != '') {
 			$('#postformsub').click(function () {
 				var  $form = $(this).parent().parent().parent()

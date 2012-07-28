@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "matches": ["http://*.singletrackworld.com/forum/*"],
-      "js": ["js/libs/jquery-1.7.1.min.js", "js/add_tools.js"]
+      "js": ["js/libs/jquery-1.7.2.min.js", "js/add_tools.js"]
     }
   ],
   "background_page": "background.html",
