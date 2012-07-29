@@ -15,7 +15,7 @@ jQuery(document).ready(function ($) {
                 , $post = $parent.children('.post')
 				, user = $(this).text();
             
-            if (users.indexOf(user) !== -1) {
+            if (users && users.indexOf(user) !== -1) {
 				$(this).parent().children('small').append(" - <span class='unblockUser' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Unblock User</span>");
 				if (showSomeonePosted) {
                     $parent.hide();
@@ -93,10 +93,6 @@ jQuery(document).ready(function ($) {
 	}
 	
 	function addSignature() {
-<<<<<<< .merge_file_BkSWVf
-	
-=======
->>>>>>> .merge_file_B3iief
 		if ( signature != null && signature != '') {
 			$('#postformsub').click(function () {
 				var  $form = $(this).parent().parent().parent()
@@ -115,7 +111,7 @@ jQuery(document).ready(function ($) {
         }
 		signature = response.result.signature;
         var isFrontPage = document.URL.indexOf('forum/topic/') === -1 ? true : false;
-        if (stringToBool(response.result.enableHideUsers) && users && !isFrontPage) {
+        if (stringToBool(response.result.enableHideUsers) && !isFrontPage) {
             hidePosts();
         }
         if (stringToBool(response.result.enableHideThreads) && users && isFrontPage) {
