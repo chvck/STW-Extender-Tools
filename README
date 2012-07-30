@@ -8,6 +8,7 @@ Done
 + 1 click quoting
 + 1 click blocking
 + Option to show hidden post
++ Links to return to go to chat forum, bike forum etc... above reply box
 + Post signature
 + Return to forum links at thread bottom
 
@@ -16,7 +17,6 @@ TODO
 Feedback from users has suggested that these would be handy features:
 + Return to thread at last point (not sure if possible, biggest issue would be working out where in the page the user was when they left)
 + User notes/tags
-+ Links to return to go to chat forum, bike forum etc... above reply box
 + Number of unread posts (killfile appears to have started this but not finished...so must be possible!)
 + A marker to easily distguish your username
 

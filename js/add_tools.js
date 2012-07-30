@@ -15,7 +15,7 @@ jQuery(document).ready(function ($) {
                 , $post = $parent.children('.post')
 				, user = $(this).text();
             
-            if (users.indexOf(user) !== -1) {
+            if (users && users.indexOf(user) !== -1) {
 				$(this).parent().children('small').append(" - <span class='unblockUser' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Unblock User</span>");
 				if (showSomeonePosted) {
                     $parent.hide();
@@ -106,6 +106,9 @@ jQuery(document).ready(function ($) {
         users = response.result.users;
         showSomeonePosted = stringToBool(response.result.showSomeonePosted);
 		quoteVerb = response.result.quoteVerb;
+        if (quoteVerb === undefined) {
+            quoteVerb = 'said';
+        }
 		signature = response.result.signature;
         var isFrontPage = document.URL.indexOf('forum/topic/') === -1 ? true : false;
         if (stringToBool(response.result.enableHideUsers) && !isFrontPage) {
