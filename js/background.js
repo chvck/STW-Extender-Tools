@@ -11,6 +11,7 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
             'users' : localStorage.blockedUsers
             , 'enableHideUsers' : localStorage.enableHideUsers
             , 'enableHideThreads' : localStorage.enableHideThreads
+            , 'enableHideShare' : localStorage.enableHideShare
             , 'showSomeonePosted' : localStorage.showSomeonePosted
             , 'enableEasyQuoting' : localStorage.enableEasyQuoting
 			, 'enableSignature'   : localStorage.enableSignature

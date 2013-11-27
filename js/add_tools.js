@@ -69,6 +69,10 @@ jQuery(document).ready(function ($) {
             }
         });
     }
+    
+    function hideShare() {
+        $('.addthis_toolbox').hide();
+    }
 
     function addEasyQuotes() {
         $('.threadauthor small').append(" - <span class='easyQuote' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Quote</span>");
@@ -116,6 +120,9 @@ jQuery(document).ready(function ($) {
         }
         if (stringToBool(response.result.enableHideThreads) && users && isFrontPage) {
             hideThreads();
+        }
+        if (stringToBool(response.result.enableHideShare)) {
+            hideShare();
         }
         if (stringToBool(response.result.enableEasyQuoting)) {
             addEasyQuotes();

@@ -3,6 +3,7 @@ $(function () {
         , $hideUsers = $('#enable_hide_users')
         , $showPosted = $('#enable_show_posted')
         , $hideThreads = $('#enable_hide_threads')
+        , $hideShare = $('#enable_hide_share')
         , $easyQuoting = $('#enable_easy_quoting')
 		, $addSignature = $('#enable_signature')
 		, $signature = $('#signature')
@@ -29,6 +30,12 @@ $(function () {
             $hideThreads.removeAttr('checked');
         }
   
+        if (localStorage.enableHideShare === 'true') {
+            $hideShare.attr('checked', 'checked');
+        } else {
+            $hideShare.removeAttr('checked');
+        }
+
         if (localStorage.enableEasyQuoting === 'true') {
             $easyQuoting.attr('checked', 'checked');
         } else {
@@ -52,12 +59,14 @@ $(function () {
             , $hideUsersChecked = $hideUsers.is(':checked')
             , $showPostedChecked = $showPosted.is(':checked')
             , $hideThreadsChecked = $hideThreads.is(':checked')
+            , $hideShareChecked = $hideShare.is(':checked')
             , $easyQuotingChecked = $easyQuoting.is(':checked')
 			, $addSignatureChecked = $addSignature.is(':checked')
 			, quoteVerb = $quoteVerb.val()
             , hideUsers = localStorage.enableHideUsers
             , showPosted = localStorage.showSomeonePosted
             , hideThreads = localStorage.enableHideThreads
+            , hideShare = localStorage.enableHideShare
             , easyQuoting = localStorage.enableEasyQuoting
 			, addSignature = localStorage.enableSignature
 			, signature = $signature.val()
@@ -93,6 +102,13 @@ $(function () {
             message.push('Hide blocked users threads disabled!');
         }
         localStorage.enableHideThreads = $hideThreadsChecked; 
+
+        if ($hideShareChecked && String($hideShareChecked) !== hideShare) {
+            message.push('Hide share button enabled!');
+        } else if (String($hideShareChecked) !== hideShare) {
+            message.push('Hide share button disabled!');
+        }
+        localStorage.enableHideShare = $hideShareChecked; 
 
         if ($easyQuotingChecked && String($easyQuotingChecked) !== easyQuoting) {
             message.push('Easy quoting enabled!');
