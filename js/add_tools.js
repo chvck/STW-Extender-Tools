@@ -86,9 +86,15 @@ jQuery(document).ready(function ($) {
 				
 			poster = $tmp.text();
             quote = '[quote=' + poster + ' ' + quoteVerb + ']' + $post.text() + '[/quote]';
-            $('#post_content').val(quote);
             
-            document.getElementById('postform').scrollIntoView();
+			if ($('.post-form').text() === ("Reply \xBB")) {
+				replyUrl = $('.post-form').children().attr('href');
+				chrome.extension.sendRequest({msg: 'redirect', redirect: replyUrl, quotetext: quote});
+			} else {
+				$('#post_content').val(quote);
+				document.getElementById('postform').scrollIntoView();
+			}
+
         });  
     }
 
@@ -133,4 +139,10 @@ jQuery(document).ready(function ($) {
 		backToForumTops();
 
     });
+});
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.msg === 'add_quote') {
+		$('#post_content').val(request.quotetext);
+	}
 });
