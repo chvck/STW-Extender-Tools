@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
         $('.hideUser').live('click', function () {
             var user = $(this).parent().siblings('strong').text();
             if (users.indexOf(user) === -1) {
-                chrome.extension.sendRequest({msg: 'hide_user', username: user}, function (response) {
+                chrome.runtime.sendMessage({msg: 'hide_user', username: user}, function (response) {
                     users = response.result.users;              
                 });
 			}
@@ -55,7 +55,7 @@ jQuery(document).ready(function ($) {
         $('.unblockUser').live('click', function () {
             var user = $(this).parent().siblings('strong').text();
             if (users.indexOf(user) != -1) {
-                chrome.extension.sendRequest({msg: 'unblock_user', username: user}, function (response) {
+                chrome.runtime.sendMessage({msg: 'unblock_user', username: user}, function (response) {
                     users = response.result.users;              
                 });
 			}
@@ -106,7 +106,7 @@ jQuery(document).ready(function ($) {
 		}
 	}
     
-    chrome.extension.sendRequest({msg: 'get_options'}, function (response) {
+    chrome.runtime.sendMessage({msg: 'get_options'}, function (response) {
         users = response.result.users;
         showSomeonePosted = stringToBool(response.result.showSomeonePosted);
 		quoteVerb = response.result.quoteVerb;
