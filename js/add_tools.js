@@ -89,7 +89,7 @@ jQuery(document).ready(function ($) {
             
 			if ($('.post-form').text() === ("Reply \xBB")) {
 				replyUrl = $('.post-form').children().attr('href');
-				chrome.extension.sendRequest({msg: 'redirect', redirect: replyUrl, quotetext: quote});
+				chrome.runtime.sendMessage({msg: 'redirect', redirect: replyUrl, quotetext: quote});
 			} else {
 				$('#post_content').val(quote);
 				document.getElementById('postform').scrollIntoView();
