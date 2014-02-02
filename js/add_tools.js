@@ -2,6 +2,7 @@ jQuery(document).ready(function ($) {
     var users
         , showText = "<p class='showLink' style='cursor:pointer; color:#333; text-decoration:underline;'>Show this post</p>"
         ,showSomeonePosted
+		,appendQuotes
 		,quoteVerb
 		,signature;
 
@@ -119,6 +120,7 @@ jQuery(document).ready(function ($) {
         if (quoteVerb === undefined) {
             quoteVerb = 'said';
         }
+		appendQuotes = stringToBool(response.result.enableAppendQuotes);
 		signature = response.result.signature;
         var isFrontPage = document.URL.indexOf('forum/topic/') === -1 ? true : false;
         if (stringToBool(response.result.enableHideUsers) && !isFrontPage) {
