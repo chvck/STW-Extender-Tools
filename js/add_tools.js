@@ -86,12 +86,15 @@ jQuery(document).ready(function ($) {
                 , quote;
 				
 			poster = $tmp.text();
-            quote = '[quote=' + poster + ' ' + quoteVerb + ']' + $post.text() + '[/quote]';
+            quote = '[quote=' + poster + ' ' + quoteVerb + ']' + $post.text() + '[/quote]\n\n';
             
 			if ($('.post-form').text() === ("Reply \xBB")) {
 				replyUrl = $('.post-form').children().attr('href');
 				chrome.runtime.sendMessage({msg: 'redirect', redirect: replyUrl, quotetext: quote});
 			} else {
+				if (appendQuotes) {
+					quote = $('#post_content').val() + quote;
+				}
 				$('#post_content').val(quote);
 				document.getElementById('postform').scrollIntoView();
 			}
