@@ -23,6 +23,7 @@
   },
   "options_page": "options.html",
   "permissions": [
-     "http://singletrackworld.com/forum/*", "http://www.singletrackworld.com/forum/*", "contextMenus"
+    "tabs",
+	"http://singletrackworld.com/forum/*", "http://www.singletrackworld.com/forum/*", "contextMenus"
   ]
 }
