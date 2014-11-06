@@ -2,6 +2,7 @@ jQuery(document).ready(function ($) {
     var users
         , showText = "<p class='showLink' style='cursor:pointer; color:#333; text-decoration:underline;'>Show this post</p>"
         ,showSomeonePosted
+		,appendQuotes
 		,quoteVerb
 		,signature;
 
@@ -85,12 +86,15 @@ jQuery(document).ready(function ($) {
                 , quote;
 				
 			poster = $tmp.text();
-            quote = '[quote=' + poster + ' ' + quoteVerb + ']' + $post.text() + '[/quote]';
+            quote = '[quote=' + poster + ' ' + quoteVerb + ']' + $post.text() + '[/quote]\n\n';
             
 			if ($('.post-form').text() === ("Reply \xBB")) {
 				replyUrl = $('.post-form').children().attr('href');
 				chrome.runtime.sendMessage({msg: 'redirect', redirect: replyUrl, quotetext: quote});
 			} else {
+				if (appendQuotes) {
+					quote = $('#post_content').val() + quote;
+				}
 				$('#post_content').val(quote);
 				document.getElementById('postform').scrollIntoView();
 			}
@@ -119,6 +123,7 @@ jQuery(document).ready(function ($) {
         if (quoteVerb === undefined) {
             quoteVerb = 'said';
         }
+		appendQuotes = stringToBool(response.result.enableAppendQuotes);
 		signature = response.result.signature;
         var isFrontPage = document.URL.indexOf('forum/topic/') === -1 ? true : false;
         if (stringToBool(response.result.enableHideUsers) && !isFrontPage) {

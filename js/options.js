@@ -5,6 +5,7 @@ $(function () {
         , $hideThreads = $('#enable_hide_threads')
         , $hideShare = $('#enable_hide_share')
         , $easyQuoting = $('#enable_easy_quoting')
+        , $appendQuotes = $('#enable_append_quotes')
 		, $addSignature = $('#enable_signature')
 		, $signature = $('#signature')
 		, $quoteVerb = $('#quoteVerb');
@@ -42,6 +43,12 @@ $(function () {
             $easyQuoting.removeAttr('checked');
         }
 		
+        if (localStorage.enableAppendQuotes === 'true') {
+            $appendQuotes.attr('checked', 'checked');
+        } else {
+            $appendQuotes.removeAttr('checked');
+        }
+		
 		$quoteVerb.val(localStorage.quoteVerb);
 		
 		if (localStorage.enableSignature === 'true') {
@@ -61,6 +68,7 @@ $(function () {
             , $hideThreadsChecked = $hideThreads.is(':checked')
             , $hideShareChecked = $hideShare.is(':checked')
             , $easyQuotingChecked = $easyQuoting.is(':checked')
+            , $appendQuotesChecked = $appendQuotes.is(':checked')
 			, $addSignatureChecked = $addSignature.is(':checked')
 			, quoteVerb = $quoteVerb.val()
             , hideUsers = localStorage.enableHideUsers
@@ -68,6 +76,7 @@ $(function () {
             , hideThreads = localStorage.enableHideThreads
             , hideShare = localStorage.enableHideShare
             , easyQuoting = localStorage.enableEasyQuoting
+            , appendQuotes = localStorage.enableAppendQuotes
 			, addSignature = localStorage.enableSignature
 			, signature = $signature.val()
             , messageText = ''
@@ -116,6 +125,13 @@ $(function () {
             message.push('Easy quoting disabled!');
         }
         localStorage.enableEasyQuoting = $easyQuotingChecked;  
+		
+        if ($appendQuotesChecked && String($appendQuotesChecked) !== appendQuotes) {
+            message.push('Append quotes enabled!');
+        } else if (String($appendQuotesChecked) !== appendQuotes) {
+            message.push('Append quotes disabled!');
+        }
+        localStorage.enableAppendQuotes = $appendQuotesChecked;  
 		
 		if (localStorage.quoteVerb !== quoteVerb) {
             message.push('Quotation verb updated!');
