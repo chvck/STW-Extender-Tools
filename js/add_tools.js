@@ -2,6 +2,7 @@ jQuery(document).ready(function ($) {
     var users
         , showText = "<p class='showLink' style='cursor:pointer; color:#333; text-decoration:underline;'>Show this post</p>"
         ,showSomeonePosted
+		,appendQuotes
 		,quoteVerb
 		,signature;
 
@@ -38,7 +39,7 @@ jQuery(document).ready(function ($) {
         $('.hideUser').live('click', function () {
             var user = $(this).parent().siblings('strong').text();
             if (users.indexOf(user) === -1) {
-                chrome.extension.sendRequest({msg: 'hide_user', username: user}, function (response) {
+                chrome.runtime.sendMessage({msg: 'hide_user', username: user}, function (response) {
                     users = response.result.users;              
                 });
 			}
@@ -55,7 +56,7 @@ jQuery(document).ready(function ($) {
         $('.unblockUser').live('click', function () {
             var user = $(this).parent().siblings('strong').text();
             if (users.indexOf(user) != -1) {
-                chrome.extension.sendRequest({msg: 'unblock_user', username: user}, function (response) {
+                chrome.runtime.sendMessage({msg: 'unblock_user', username: user}, function (response) {
                     users = response.result.users;              
                 });
 			}
@@ -69,6 +70,10 @@ jQuery(document).ready(function ($) {
             }
         });
     }
+    
+    function hideShare() {
+        $('.addthis_toolbox').hide();
+    }
 
     function addEasyQuotes() {
         $('.threadauthor small').append(" - <span class='easyQuote' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Quote</span>");
@@ -81,10 +86,19 @@ jQuery(document).ready(function ($) {
                 , quote;
 				
 			poster = $tmp.text();
-            quote = '[quote=' + poster + ' ' + quoteVerb + ']' + $post.text() + '[/quote]';
-            $('#post_content').val(quote);
+            quote = '[quote=' + poster + ' ' + quoteVerb + ']' + $post.text() + '[/quote]\n\n';
             
-            document.getElementById('postform').scrollIntoView();
+			if ($('.post-form').text() === ("Reply \xBB")) {
+				replyUrl = $('.post-form').children().attr('href');
+				chrome.runtime.sendMessage({msg: 'redirect', redirect: replyUrl, quotetext: quote});
+			} else {
+				if (appendQuotes) {
+					quote = $('#post_content').val() + quote;
+				}
+				$('#post_content').val(quote);
+				document.getElementById('postform').scrollIntoView();
+			}
+
         });  
     }
 
@@ -102,13 +116,14 @@ jQuery(document).ready(function ($) {
 		}
 	}
     
-    chrome.extension.sendRequest({msg: 'get_options'}, function (response) {
+    chrome.runtime.sendMessage({msg: 'get_options'}, function (response) {
         users = response.result.users;
         showSomeonePosted = stringToBool(response.result.showSomeonePosted);
 		quoteVerb = response.result.quoteVerb;
         if (quoteVerb === undefined) {
             quoteVerb = 'said';
         }
+		appendQuotes = stringToBool(response.result.enableAppendQuotes);
 		signature = response.result.signature;
         var isFrontPage = document.URL.indexOf('forum/topic/') === -1 ? true : false;
         if (stringToBool(response.result.enableHideUsers) && !isFrontPage) {
@@ -116,6 +131,9 @@ jQuery(document).ready(function ($) {
         }
         if (stringToBool(response.result.enableHideThreads) && users && isFrontPage) {
             hideThreads();
+        }
+        if (stringToBool(response.result.enableHideShare)) {
+            hideShare();
         }
         if (stringToBool(response.result.enableEasyQuoting)) {
             addEasyQuotes();
@@ -126,4 +144,10 @@ jQuery(document).ready(function ($) {
 		backToForumTops();
 
     });
+});
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.msg === 'add_quote') {
+		$('#post_content').val(request.quotetext);
+	}
 });
