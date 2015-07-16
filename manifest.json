@@ -1,6 +1,6 @@
 {
   "name": "Singletrack World Forum Extender Tools",
-  "version": "1.5",
+  "version": "1.7",
   "manifest_version": 2,
   "description": "Adds some useful functionality to the stw forum such as user ignoring and easy-quoting",
   "icons": {
@@ -15,7 +15,7 @@
   "content_scripts": [
     {
       "matches": ["http://*.singletrackworld.com/forum/*"],
-      "js": ["js/libs/jquery-1.8.2.min.js", "js/add_tools.js"]
+      "js": ["js/libs/jquery-1.11.3.min.js", "js/add_tools.js"]
     }
   ],
   "background": {

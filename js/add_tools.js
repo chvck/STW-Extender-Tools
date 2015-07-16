@@ -30,13 +30,13 @@ jQuery(document).ready(function ($) {
 			}
         });
             
-        $('.showLink').live('click', function () {
+        $(document).on("click", ".showLink", function () {
             $(this).parent().children().fadeIn();
             $(this).remove();
         });
 
      
-        $('.hideUser').live('click', function () {
+        $(document).on("click", ".hideUser", function () {
             var user = $(this).parent().siblings('strong').text();
             if (users.indexOf(user) === -1) {
                 chrome.runtime.sendMessage({msg: 'hide_user', username: user}, function (response) {
@@ -53,7 +53,7 @@ jQuery(document).ready(function ($) {
             }
         });
 		
-        $('.unblockUser').live('click', function () {
+        $(document).on("click", ".unblockUser", function () {
             var user = $(this).parent().siblings('strong').text();
             if (users.indexOf(user) != -1) {
                 chrome.runtime.sendMessage({msg: 'unblock_user', username: user}, function (response) {
@@ -78,7 +78,7 @@ jQuery(document).ready(function ($) {
     function addEasyQuotes() {
         $('.threadauthor small').append(" - <span class='easyQuote' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Quote</span>");
             
-        $('.easyQuote').live('click', function () {
+        $(document).on("click", ".easyQuote", function () {
             var $parent = $(this).parent().parent().parent()
                 , $post = $parent.children('.post')
 				, $tmp = $(this).parent().parent().children("strong")
@@ -103,7 +103,7 @@ jQuery(document).ready(function ($) {
     }
 
 	function backToForumTops() {
-		$('p.rss-link').after ( "Return to <a href=\"/forum/\">Overview</a> <a href=\"/forum/forum/bike-chat\">Bike Forum</a> <a href=\"/forum/forum/off-topic\">Chat Forum</a>" );
+		$('ol#thread').after ( "Return to <a href=\"/forum/\">Overview</a> <a href=\"/forum/forum/bike-chat\">Bike Forum</a> <a href=\"/forum/forum/off-topic\">Chat Forum</a>" );
 	}
 	
 	function addSignature() {
