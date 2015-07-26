@@ -1,6 +1,6 @@
 {
   "name": "Singletrack World Forum Extender Tools",
-  "version": "1.5",
+  "version": "1.7",
   "manifest_version": 2,
   "description": "Adds some useful functionality to the stw forum such as user ignoring and easy-quoting",
   "icons": {
