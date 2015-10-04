@@ -103,7 +103,7 @@ jQuery(document).ready(function ($) {
     }
 
 	function backToForumTops() {
-		$('p.rss-link').after ( "Return to <a href=\"/forum/\">Overview</a> <a href=\"/forum/forum/bike-chat\">Bike Forum</a> <a href=\"/forum/forum/off-topic\">Chat Forum</a>" );
+		$('h2.post-form').before ( "Return to <a href=\"/forum/\">Overview</a> <a href=\"/forum/forum/bike-chat\">Bike Forum</a> <a href=\"/forum/forum/off-topic\">Chat Forum</a>" );
 	}
 	
 	function addSignature() {
