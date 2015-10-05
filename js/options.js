@@ -166,18 +166,18 @@ $(function () {
 
 
     (function () {
-        $('.buttons .save').live('click', function () {
+        $(document).on('click', '.buttons .save', function () {
             saveOptions();
             window.close();
             return false;
         });
 
-        $('.buttons .apply').live('click', function () {
+        $(document).on('click', '.buttons .apply', function () {
             saveOptions();
             return false;
         });
 
-        $('.buttons .cancel').live('click', function () {
+        $(document).on('click', 'buttons .cancel', function () {
             window.close();
             return false;
         });
