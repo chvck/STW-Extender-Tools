@@ -11,13 +11,13 @@ jQuery(document).ready(function ($) {
     }
         
     function hidePosts() {
-        $('.threadauthor strong').each(function () {
+        $('.bbp-author-name').each(function () {
             var $parent = $(this).parent().parent()
-                , $post = $parent.children('.post')
+                , $post = $parent.children('.bbp-reply-content')
 				, user = $(this).text();
             
             if (users && users.indexOf(user) !== -1) {
-				$(this).parent().children('small').append(" - <span class='unblockUser' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Unblock User</span>");
+				$(this).parent().append("&emsp;<span class='unblockUser' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Unblock User</span>");
 				if (showSomeonePosted) {
                     $parent.hide();
                     $parent.after("<p class='showLink' style='cursor:pointer; color:#333; text-decoration:underline;'>Show post from " + user + "</p" );
@@ -26,7 +26,7 @@ jQuery(document).ready(function ($) {
                 }
 				
             } else {
-				$(this).parent().children('small').append(" - <span class='hideUser' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Block User</span>");
+				$(this).parent().append("&emsp;<span class='hideUser' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Block User</span>");
 			}
         });
             
@@ -37,14 +37,16 @@ jQuery(document).ready(function ($) {
 
      
         $(document).on("click", ".hideUser", function () {
-            var user = $(this).parent().siblings('strong').text();
+			$(this).attr('class', 'unblockUser');
+			$(this).text('Unblock User');
+            var user = $(this).parent().children('.bbp-author-name').text();
             if (users.indexOf(user) === -1) {
                 chrome.runtime.sendMessage({msg: 'hide_user', username: user}, function (response) {
                     users = response.result.users;              
                 });
 			}
-            var $parent = $(this).parent().parent().parent()
-                , $post = $parent.children('.post');
+            var $parent = $(this).parent().parent()
+                , $post = $parent.children('.bbp-reply-content');
             if (showSomeonePosted) {
                 $parent.fadeOut();
                 $parent.after("<p class='showLink' style='cursor:pointer; color:#333; text-decoration:underline;'>Show post from " + user + "</p" );
@@ -54,7 +56,9 @@ jQuery(document).ready(function ($) {
         });
 		
         $(document).on("click", ".unblockUser", function () {
-            var user = $(this).parent().siblings('strong').text();
+			$(this).attr('class', 'hideUser');
+			$(this).text('Block User');
+            var user = $(this).parent().children('.bbp-author-name').text();
             if (users.indexOf(user) != -1) {
                 chrome.runtime.sendMessage({msg: 'unblock_user', username: user}, function (response) {
                     users = response.result.users;              
@@ -76,28 +80,23 @@ jQuery(document).ready(function ($) {
     }
 
     function addEasyQuotes() {
-        $('.threadauthor small').append(" - <span class='easyQuote' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Quote</span>");
+        $('.bbp-reply-author').append("&emsp;<span class='easyQuote' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Quote</span>");
             
         $(document).on("click", ".easyQuote", function () {
-            var $parent = $(this).parent().parent().parent()
-                , $post = $parent.children('.post')
-				, $tmp = $(this).parent().parent().children("strong")
-				, poster
+            var $parent = $(this).parent().parent()
+                , $post = $parent.children('.bbp-reply-content').children('p, .bbcode-quote')
+				, user = $(this).parent().children('.bbp-author-name').text()
                 , quote;
 				
-			poster = $tmp.text();
-            quote = '[quote=' + poster + ' ' + quoteVerb + ']' + $post.text() + '[/quote]\n\n';
+            quote = '[quote=' + user + ' ' + quoteVerb + ']' +
+				$post.map(function(){ return $(this).text(); }).get().join('\n') +
+				'[/quote]\n\n';
             
-			if ($('.post-form').text() === ("Reply \xBB")) {
-				replyUrl = $('.post-form').children().attr('href');
-				chrome.runtime.sendMessage({msg: 'redirect', redirect: replyUrl, quotetext: quote});
-			} else {
 				if (appendQuotes) {
-					quote = $('#post_content').val() + quote;
+					quote = $('#bbp_reply_content').val() + '\n' + quote;
 				}
-				$('#post_content').val(quote);
-				document.getElementById('postform').scrollIntoView();
-			}
+				$('#bbp_reply_content').val(quote);
+				document.getElementById('bbp_reply_content').focus();
 
         });  
     }
