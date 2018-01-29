@@ -84,7 +84,7 @@ jQuery(document).ready(function ($) {
             
         $(document).on("click", ".easyQuote", function () {
             var $parent = $(this).parent().parent()
-                , $post = $parent.children('.bbp-reply-content').children('p, .bbcode-quote')
+                , $post = $parent.children('.bbp-reply-content').children('p, blockquote, .bbcode-quote')
 				, user = $(this).parent().children('.bbp-author-name').text()
                 , quote;
 				
