@@ -68,9 +68,9 @@ jQuery(document).ready(function ($) {
     }
    
     function hideThreads() {
-        $('td.num').each(function () {
+        $('.bbp-author-name').each(function () {
             if (users.indexOf($(this).text()) !== -1) {
-                $(this).parent().hide();
+                $(this).parent().parent().hide();
             }
         });
     }
