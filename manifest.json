@@ -14,7 +14,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://*.singletrackworld.com/forum/*"],
+      "matches": ["http://singletrackworld.com/forum/*", "https://singletrackworld.com/members/*"],
       "js": ["js/libs/jquery-1.11.3.min.js", "js/add_tools.js"]
     }
   ],
@@ -24,6 +24,6 @@
   "options_page": "options.html",
   "permissions": [
     "tabs",
-	"http://singletrackworld.com/forum/*", "http://www.singletrackworld.com/forum/*", "contextMenus"
+	"contextMenus"
   ]
 }
