@@ -29,7 +29,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         }, error: null});
         return;
     } else if (request.msg === 'unblock_user') {
-        localStorage.blockedUsers = localStorage.blockedUsers.replace( ',' + request.username, "");
+        localStorage.blockedUsers = localStorage.blockedUsers.replace( request.username, "");
+        localStorage.blockedUsers = localStorage.blockedUsers.replace( ',,', ",");
         sendResponse({msg: 'ok', result: {
             'users' : localStorage.blockedUsers
         }, error: null});
