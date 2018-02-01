@@ -119,8 +119,8 @@ jQuery(document).ready(function ($) {
         users = response.result.users;
         showSomeonePosted = stringToBool(response.result.showSomeonePosted);
 		quoteVerb = response.result.quoteVerb;
-        if (quoteVerb === undefined) {
-            quoteVerb = 'said';
+        if ((quoteVerb === undefined) || (quoteVerb === "")) {
+            quoteVerb = 'wrote';
         }
 		appendQuotes = stringToBool(response.result.enableAppendQuotes);
 		signature = response.result.signature;
