@@ -89,6 +89,8 @@ jQuery(document).ready(function ($) {
                 , quote;
 
             quote = '[b]' + user + '[/b] ' + quoteVerb + ':<blockquote>' + $post.map(function(){
+					if ($(this).is('blockquote') || $(this).hasClass('bbcode-quote'))
+						return '<blockquote>' + $(this).text() + '</blockquote>';
 					return $(this).text(); 
 				}).get().join('\n') + '</blockquote>\n\n';
             
