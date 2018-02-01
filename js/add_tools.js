@@ -87,10 +87,10 @@ jQuery(document).ready(function ($) {
                 , $post = $parent.children('.bbp-reply-content').children('p, blockquote, .bbcode-quote')
 				, user = $(this).parent().children('.bbp-author-name').text()
                 , quote;
-				
-            quote = '[quote=' + user + ' ' + quoteVerb + ']' +
-				$post.map(function(){ return $(this).text(); }).get().join('\n') +
-				'[/quote]\n\n';
+
+            quote = '[b]' + user + '[/b] ' + quoteVerb + ':<blockquote>' + $post.map(function(){
+					return $(this).text(); 
+				}).get().join('\n') + '</blockquote>\n\n';
             
 				if (appendQuotes) {
 					quote = $('#bbp_reply_content').val() + '\n' + quote;
