@@ -15,7 +15,8 @@
   "content_scripts": [
     {
       "matches": ["http://singletrackworld.com/forum/*", "https://singletrackworld.com/members/*"],
-      "js": ["js/libs/jquery-1.11.3.min.js", "js/add_tools.js"]
+      "js": ["js/libs/jquery-1.11.3.min.js", "js/add_tools.js"],
+	  "css": ["css/override.css"]
     }
   ],
   "background": {
