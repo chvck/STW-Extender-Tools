@@ -124,20 +124,21 @@ jQuery(document).ready(function ($) {
         }
 		appendQuotes = stringToBool(response.result.enableAppendQuotes);
 		signature = response.result.signature;
-        var isFrontPage = document.URL.indexOf('forum/topic/') === -1 ? true : false;
-        if (stringToBool(response.result.enableHideUsers) && !isFrontPage) {
+        var isTopic = document.URL.indexOf('forum/topic/') != -1;
+        var isReplies = document.URL.indexOf('forums/replies/') != -1;
+        if (stringToBool(response.result.enableHideUsers) && isTopic) {
             hidePosts();
         }
-        if (stringToBool(response.result.enableHideThreads) && users && isFrontPage) {
+        if (stringToBool(response.result.enableHideThreads) && users && !isTopic && !isReplies) {
             hideThreads();
         }
         if (stringToBool(response.result.enableHideShare)) {
             hideShare();
         }
-        if (stringToBool(response.result.enableEasyQuoting)) {
+        if (stringToBool(response.result.enableEasyQuoting) && isTopic) {
             addEasyQuotes();
         }
-		if (stringToBool(response.result.enableSignature)) {
+		if (stringToBool(response.result.enableSignature) && isTopic) {
 			addSignature();
         }
 		backToForumTops();
