@@ -113,6 +113,16 @@ jQuery(document).ready(function ($) {
 		}
 	}
 	
+	function addThreadRedirects() {
+		$(document).on("click", ".bbp-reply-post-date", function () {
+			var url = 'http://singletrackworld.com/forum/reply/' + $(this).parent().attr('href').substr(6) + '/';
+			chrome.runtime.sendMessage({msg: 'xget', url: url, data: '' }, function (response) {
+				var urlResponse = $($.parseHTML(response)).find('.bbp-breadcrumb-topic').attr('href');
+				chrome.runtime.sendMessage({msg: 'redirect', redirect: urlResponse});
+			});
+		});		
+	}
+	
 	function fixEditLinks() {
 		$('.bbp-reply-edit-link').each(function() {
 			$(this).attr('href', 'http://singletrackworld.com/forum/reply/' +
@@ -137,9 +147,12 @@ jQuery(document).ready(function ($) {
         if (stringToBool(response.result.enableHideThreads) && users && !isTopic && !isReplies) {
             hideThreads();
         }
-		if (isTopic) {
-			fixEditLinks();
+		if (isReplies) {
+			addThreadRedirects();
 		}
+//		if (isTopic) {
+//			fixEditLinks();
+//		}
         if (stringToBool(response.result.enableEasyQuoting) && isTopic) {
             addEasyQuotes();
         }

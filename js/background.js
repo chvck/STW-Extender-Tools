@@ -32,16 +32,27 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         }, error: null});
 		return;
     } else if (request.msg === 'redirect') {
-		chrome.tabs.query({active: true, currentWindow: true}, function(tabArray) {
-			redirectId = tabArray[0].id;
-		});
-		quote = request.quotetext;
-		
 		chrome.tabs.update({
 			url: request.redirect
 		});
 		return;
-	}
+	} else if (request.msg == 'xget') {
+
+        $.ajax({
+            type: 'GET',
+            url: request.url,
+            data: request.data,
+            success: function(responseText){
+                sendResponse(responseText);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                //if required, do some error handling
+                sendResponse();
+            }
+        });
+
+        return true; // prevents the callback from being called too early on return
+    }
 
     // We need to send a reponse, even if it's empty.
     sendResponse({msg: 'error', result: null, error: 'nothing called!'});
