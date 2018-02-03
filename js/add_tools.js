@@ -74,6 +74,14 @@ jQuery(document).ready(function ($) {
             }
         });
     }
+	
+	function unNestQuotes(element) {
+		return element.map(function(){
+			if ($(this).is('blockquote') || $(this).hasClass('bbcode-quote'))
+				return '<blockquote>' + unNestQuotes($(this).children()) + '</blockquote>';
+			return $(this).text(); 
+		}).get().join('\n');
+	}
     
     function addEasyQuotes() {
         $('.bbp-reply-author').append("&emsp;<span class='easyQuote' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Quote</span>");
@@ -84,11 +92,7 @@ jQuery(document).ready(function ($) {
 				, user = $(this).parent().children('.bbp-author-name').text()
                 , quote;
 
-            quote = '[b]' + user + '[/b] ' + quoteVerb + ':<blockquote>' + $post.map(function(){
-					if ($(this).is('blockquote') || $(this).hasClass('bbcode-quote'))
-						return '<blockquote>' + $(this).text() + '</blockquote>';
-					return $(this).text(); 
-				}).get().join('\n') + '</blockquote>\n\n';
+            quote = '[b]' + user + '[/b] ' + quoteVerb + ':<blockquote>' + unNestQuotes($post) + '</blockquote>\n\n';
             
 				if (appendQuotes) {
 					quote = $('#bbp_reply_content').val() + '\n' + quote;
