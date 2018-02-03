@@ -130,6 +130,21 @@ jQuery(document).ready(function ($) {
 		});
 	}
     
+	function addEditLinks() {
+		var myUsername = $('.account-menu').text();
+		$('.bbp-author-name').each(function() {
+			if ($(this).text() == myUsername) {
+				var adminLinks = $(this).parent().siblings('.bbp-reply-content').children('.bbp-admin-links');
+				if (!adminLinks.children().is('.bbp-reply-edit-link')) {
+					adminLinks.prepend('<a href="http://singletrackworld.com/forum/reply/' +
+						adminLinks.prev().attr('href').substr(6) +
+						'/edit/" class="bbp-reply-edit-link">Edit</a> | ');
+				}
+			}
+
+		});
+	}
+    
     chrome.runtime.sendMessage({msg: 'get_options'}, function (response) {
         users = response.result.users;
         showSomeonePosted = stringToBool(response.result.showSomeonePosted);
@@ -153,6 +168,9 @@ jQuery(document).ready(function ($) {
 //		if (isTopic) {
 //			fixEditLinks();
 //		}
+        if (stringToBool(response.result.enableAddEdit) && isTopic) {
+            addEditLinks();
+        }
         if (stringToBool(response.result.enableEasyQuoting) && isTopic) {
             addEasyQuotes();
         }

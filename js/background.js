@@ -11,6 +11,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             , 'enableHideUsers' : localStorage.enableHideUsers
             , 'enableHideThreads' : localStorage.enableHideThreads
             , 'showSomeonePosted' : localStorage.showSomeonePosted
+            , 'enableAddEdit' : localStorage.enableAddEdit
             , 'enableEasyQuoting' : localStorage.enableEasyQuoting
             , 'enableAppendQuotes' : localStorage.enableAppendQuotes
 			, 'enableSignature'   : localStorage.enableSignature

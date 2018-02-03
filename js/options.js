@@ -3,7 +3,7 @@ $(function () {
         , $hideUsers = $('#enable_hide_users')
         , $showPosted = $('#enable_show_posted')
         , $hideThreads = $('#enable_hide_threads')
-        , $hideShare = $('#enable_hide_share')
+        , $addEdit = $('#enable_add_edit')
         , $easyQuoting = $('#enable_easy_quoting')
         , $appendQuotes = $('#enable_append_quotes')
 		, $addSignature = $('#enable_signature')
@@ -31,10 +31,10 @@ $(function () {
             $hideThreads.removeAttr('checked');
         }
   
-        if (localStorage.enableHideShare === 'true') {
-            $hideShare.attr('checked', 'checked');
+        if (localStorage.enableAddEdit === 'true') {
+            $addEdit.attr('checked', 'checked');
         } else {
-            $hideShare.removeAttr('checked');
+            $addEdit.removeAttr('checked');
         }
 
         if (localStorage.enableEasyQuoting === 'true') {
@@ -66,7 +66,7 @@ $(function () {
             , $hideUsersChecked = $hideUsers.is(':checked')
             , $showPostedChecked = $showPosted.is(':checked')
             , $hideThreadsChecked = $hideThreads.is(':checked')
-            , $hideShareChecked = $hideShare.is(':checked')
+            , $addEditChecked = $addEdit.is(':checked')
             , $easyQuotingChecked = $easyQuoting.is(':checked')
             , $appendQuotesChecked = $appendQuotes.is(':checked')
 			, $addSignatureChecked = $addSignature.is(':checked')
@@ -74,7 +74,7 @@ $(function () {
             , hideUsers = localStorage.enableHideUsers
             , showPosted = localStorage.showSomeonePosted
             , hideThreads = localStorage.enableHideThreads
-            , hideShare = localStorage.enableHideShare
+            , addEdit = localStorage.enableAddEdit
             , easyQuoting = localStorage.enableEasyQuoting
             , appendQuotes = localStorage.enableAppendQuotes
 			, addSignature = localStorage.enableSignature
@@ -112,12 +112,12 @@ $(function () {
         }
         localStorage.enableHideThreads = $hideThreadsChecked; 
 
-        if ($hideShareChecked && String($hideShareChecked) !== hideShare) {
-            message.push('Hide share button enabled!');
-        } else if (String($hideShareChecked) !== hideShare) {
-            message.push('Hide share button disabled!');
+        if ($addEditChecked && String($addEditChecked) !== addEdit) {
+            message.push('Add edit enabled!');
+        } else if (String($addEditChecked) !== addEdit) {
+            message.push('Add edit disabled!');
         }
-        localStorage.enableHideShare = $hideShareChecked; 
+        localStorage.enableAddEdit = $addEditChecked; 
 
         if ($easyQuotingChecked && String($easyQuotingChecked) !== easyQuoting) {
             message.push('Easy quoting enabled!');
