@@ -105,10 +105,10 @@ jQuery(document).ready(function ($) {
 	
 	function addSignature() {
 		if ( signature != null && signature != '') {
-			$('#postformsub').click(function () {
-				var  $form = $(this).parent().parent().parent()
-					,$text = $form.find('#post_content').val();
-				$('#post_content').val($text + '\n' + signature);
+			$('#bbp_reply_submit').click(function () {
+				var  $form = $(this).parent().parent()
+					,$text = $form.find('#bbp_reply_content').val();
+				$('#bbp_reply_content').val($text + '\n' + signature);
 			});
 		}
 	}
