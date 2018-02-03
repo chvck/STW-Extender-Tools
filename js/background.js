@@ -3,9 +3,6 @@
 * Event bindings.
 * =====================================================================
 */
-var quote = "";
-var redirectId = -1;
-
 // Any requests send via chrome ext messaging system.
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.msg === 'get_options') {
@@ -13,7 +10,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             'users' : localStorage.blockedUsers
             , 'enableHideUsers' : localStorage.enableHideUsers
             , 'enableHideThreads' : localStorage.enableHideThreads
-            , 'enableHideShare' : localStorage.enableHideShare
             , 'showSomeonePosted' : localStorage.showSomeonePosted
             , 'enableEasyQuoting' : localStorage.enableEasyQuoting
             , 'enableAppendQuotes' : localStorage.enableAppendQuotes
@@ -49,13 +45,5 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     // We need to send a reponse, even if it's empty.
     sendResponse({msg: 'error', result: null, error: 'nothing called!'});
-});
-
- chrome.tabs.onUpdated.addListener(function(tabId, info, tab) {
-    if ((info.status === 'complete') && (tabId === redirectId)) {
-		chrome.tabs.sendMessage(tabId, {msg: 'add_quote', quotetext: quote});
-		quote = '';
-		redirectId = -1;
-	}
 });
 

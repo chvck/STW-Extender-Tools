@@ -75,10 +75,6 @@ jQuery(document).ready(function ($) {
         });
     }
     
-    function hideShare() {
-        $('.addthis_toolbox').hide();
-    }
-
     function addEasyQuotes() {
         $('.bbp-reply-author').append("&emsp;<span class='easyQuote' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Quote</span>");
             
@@ -144,9 +140,6 @@ jQuery(document).ready(function ($) {
 		if (isTopic) {
 			fixEditLinks();
 		}
-        if (stringToBool(response.result.enableHideShare)) {
-            hideShare();
-        }
         if (stringToBool(response.result.enableEasyQuoting) && isTopic) {
             addEasyQuotes();
         }
