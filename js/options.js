@@ -3,7 +3,6 @@ $(function () {
         , $hideUsers = $('#enable_hide_users')
         , $showPosted = $('#enable_show_posted')
         , $hideThreads = $('#enable_hide_threads')
-        , $addEdit = $('#enable_add_edit')
         , $easyQuoting = $('#enable_easy_quoting')
         , $appendQuotes = $('#enable_append_quotes')
 		, $addSignature = $('#enable_signature')
@@ -29,12 +28,6 @@ $(function () {
             $hideThreads.attr('checked', 'checked');
         } else {
             $hideThreads.removeAttr('checked');
-        }
-  
-        if (localStorage.enableAddEdit === 'true') {
-            $addEdit.attr('checked', 'checked');
-        } else {
-            $addEdit.removeAttr('checked');
         }
 
         if (localStorage.enableEasyQuoting === 'true') {
@@ -66,7 +59,6 @@ $(function () {
             , $hideUsersChecked = $hideUsers.is(':checked')
             , $showPostedChecked = $showPosted.is(':checked')
             , $hideThreadsChecked = $hideThreads.is(':checked')
-            , $addEditChecked = $addEdit.is(':checked')
             , $easyQuotingChecked = $easyQuoting.is(':checked')
             , $appendQuotesChecked = $appendQuotes.is(':checked')
 			, $addSignatureChecked = $addSignature.is(':checked')
@@ -74,7 +66,6 @@ $(function () {
             , hideUsers = localStorage.enableHideUsers
             , showPosted = localStorage.showSomeonePosted
             , hideThreads = localStorage.enableHideThreads
-            , addEdit = localStorage.enableAddEdit
             , easyQuoting = localStorage.enableEasyQuoting
             , appendQuotes = localStorage.enableAppendQuotes
 			, addSignature = localStorage.enableSignature
@@ -110,14 +101,7 @@ $(function () {
         } else if (String($hideThreadsChecked) !== hideThreads) {
             message.push('Hide blocked users threads disabled!');
         }
-        localStorage.enableHideThreads = $hideThreadsChecked; 
-
-        if ($addEditChecked && String($addEditChecked) !== addEdit) {
-            message.push('Add edit enabled!');
-        } else if (String($addEditChecked) !== addEdit) {
-            message.push('Add edit disabled!');
-        }
-        localStorage.enableAddEdit = $addEditChecked; 
+        localStorage.enableHideThreads = $hideThreadsChecked;
 
         if ($easyQuotingChecked && String($easyQuotingChecked) !== easyQuoting) {
             message.push('Easy quoting enabled!');

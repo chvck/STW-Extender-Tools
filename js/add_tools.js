@@ -1,16 +1,10 @@
 jQuery(document).ready(function ($) {
-    var users
-        , showText = "<p class='showLink' style='cursor:pointer; color:#333; text-decoration:underline;'>Show this post</p>"
-        ,showSomeonePosted
-		,appendQuotes
-		,quoteVerb
-		,signature;
 
     function stringToBool(value) {
         return value === 'true';
     }
         
-    function hidePosts() {
+    function hidePosts(showSomeonePosted, users) {
         $('.bbp-author-name').each(function () {
             var $parent = $(this).parent().parent()
                 , $post = $parent.children('.bbp-reply-content')
@@ -67,47 +61,57 @@ jQuery(document).ready(function ($) {
         });		
     }
    
-    function hideThreads() {
+    function hideThreads(users) {
         $('.bbp-author-name').each(function () {
             if (users.indexOf($(this).text()) !== -1) {
                 $(this).parent().parent().hide();
             }
         });
     }
-	
-	function unNestQuotes(element) {
-		return element.map(function(){
-			if ($(this).is('blockquote') || $(this).hasClass('bbcode-quote'))
-				return '<blockquote>' + unNestQuotes($(this).children()) + '</blockquote>';
-			return $(this).text(); 
-		}).get().join('\n');
-	}
     
-    function addEasyQuotes() {
+    function makeQuoteUsername(username, quoteVerb) {
+        var usernameP = $('<p></p>');
+        var usernameStrong = $('<strong></string>')
+        usernameStrong.text(username + ' ' + quoteVerb)
+        usernameP.append(usernameStrong)
+
+        return usernameP;
+    }
+    
+    function makeQuotePost($post) {
+        var $blockQuote = $('<blockquote></blockquote>')
+        $post.each(function(key, val) {
+            $blockQuote.append($(val).clone());
+        })
+
+        return $blockQuote;
+    }
+    
+    function addEasyQuotes(appendQuotes, quoteVerb) {
         $('.bbp-reply-author').append("&emsp;<span class='easyQuote' style='display:inline; cursor:pointer; color:#333; text-decoration:underline;'>Quote</span>");
             
         $(document).on("click", ".easyQuote", function () {
-            var $parent = $(this).parent().parent()
-                , $post = $parent.children('.bbp-reply-content').children('p, blockquote, .bbcode-quote')
-				, user = $(this).parent().children('.bbp-author-name').text()
-                , quote;
+            var $parent = $(this).parent().parent(),
+                $post = $parent.children('.bbp-reply-content').children('p, blockquote, .bbcode-quote'),
+				user = $(this).parent().children('.bbp-author-name').text();
 
-            quote = '[b]' + user + '[/b] ' + quoteVerb + ':<blockquote>' + unNestQuotes($post) + '</blockquote>\n\n';
-            
-				if (appendQuotes) {
-					quote = $('#bbp_reply_content').val() + '\n' + quote;
-				}
-				$('#bbp_reply_content').val(quote);
-				document.getElementById('bbp_reply_content').focus();
-
+            var $contentBox = $('#bbp_reply_content_ifr').contents().find('#tinymce');
+            if(!appendQuotes) {
+                $contentBox.empty();
+            }
+            var $usernameQuote = makeQuoteUsername(user, quoteVerb);
+            var $postQuote = makeQuotePost($post);
+            $contentBox.append($usernameQuote);
+            $contentBox.append($postQuote);
+            $contentBox.focus();
         });  
     }
 
 	function backToForumTops() {
-		$('ol#thread').after ( "Return to <a href=\"/forum/\">Overview</a> <a href=\"/forum/forum/bike-chat\">Bike Forum</a> <a href=\"/forum/forum/off-topic\">Chat Forum</a>" );
+		$('#bbpress-forums .bbp-pagination').after ( "Return to <a href=\"/forum/\">Overview</a> <a href=\"/forum/forum/bike-chat\">Bike Forum</a> <a href=\"/forum/forum/off-topic\">Chat Forum</a>" );
 	}
 	
-	function addSignature() {
+	function addSignature(signature) {
 		if ( signature != null && signature != '') {
 			$('#bbp_reply_submit').click(function () {
 				var  $form = $(this).parent().parent()
@@ -116,70 +120,29 @@ jQuery(document).ready(function ($) {
 			});
 		}
 	}
-	
-	function addThreadRedirects() {
-		$(document).on("click", ".bbp-reply-post-date", function () {
-			var url = 'http://singletrackworld.com/forum/reply/' + $(this).parent().attr('href').substr(6) + '/';
-			chrome.runtime.sendMessage({msg: 'xget', url: url, data: '' }, function (response) {
-				var urlResponse = $($.parseHTML(response)).find('.bbp-breadcrumb-topic').attr('href');
-				chrome.runtime.sendMessage({msg: 'redirect', redirect: urlResponse});
-			});
-		});		
-	}
-	
-	function fixEditLinks() {
-		$('.bbp-reply-edit-link').each(function() {
-			$(this).attr('href', 'http://singletrackworld.com/forum/reply/' +
-				$(this).parent().prev().attr('href').substr(6) + '/edit/');
-		});
-	}
-    
-	function addEditLinks() {
-		var myUsername = $('.account-menu').text();
-		$('.bbp-author-name').each(function() {
-			if ($(this).text() == myUsername) {
-				var adminLinks = $(this).parent().siblings('.bbp-reply-content').children('.bbp-admin-links');
-				if (!adminLinks.children().is('.bbp-reply-edit-link')) {
-					adminLinks.prepend('<a href="http://singletrackworld.com/forum/reply/' +
-						adminLinks.prev().attr('href').substr(6) +
-						'/edit/" class="bbp-reply-edit-link">Edit</a> | ');
-				}
-			}
-
-		});
-	}
     
     chrome.runtime.sendMessage({msg: 'get_options'}, function (response) {
-        users = response.result.users;
-        showSomeonePosted = stringToBool(response.result.showSomeonePosted);
-		quoteVerb = response.result.quoteVerb;
+        var users = response.result.users;
+        var showSomeonePosted = stringToBool(response.result.showSomeonePosted);
+		var quoteVerb = response.result.quoteVerb;
         if ((quoteVerb === undefined) || (quoteVerb === "")) {
             quoteVerb = 'wrote';
         }
-		appendQuotes = stringToBool(response.result.enableAppendQuotes);
-		signature = response.result.signature;
+		var appendQuotes = stringToBool(response.result.enableAppendQuotes);
+		var signature = response.result.signature;
         var isTopic = document.URL.indexOf('forum/topic/') != -1;
         var isReplies = document.URL.indexOf('forums/replies/') != -1;
         if (stringToBool(response.result.enableHideUsers) && isTopic) {
-            hidePosts();
+            hidePosts(showSomeonePosted, users);
         }
         if (stringToBool(response.result.enableHideThreads) && users && !isTopic && !isReplies) {
-            hideThreads();
-        }
-		if (isReplies) {
-			addThreadRedirects();
-		}
-//		if (isTopic) {
-//			fixEditLinks();
-//		}
-        if (stringToBool(response.result.enableAddEdit) && isTopic) {
-            addEditLinks();
+            hideThreads(users);
         }
         if (stringToBool(response.result.enableEasyQuoting) && isTopic) {
-            addEasyQuotes();
+            addEasyQuotes(appendQuotes, quoteVerb);
         }
 		if (stringToBool(response.result.enableSignature) && isTopic) {
-			addSignature();
+			addSignature(signature);
         }
 		backToForumTops();
 
