@@ -127,7 +127,7 @@ jQuery(document).ready(function ($) {
     }
 
     function backToForumTops() {
-        $('#bbpress-forums .bbp-pagination').after("Return to <a href=\"/forum/\">Overview</a> <a href=\"/forum/forum/bike-chat\">Bike Forum</a> <a href=\"/forum/forum/off-topic\">Chat Forum</a>");
+        $('#bbpress-forums .bbp-pagination').eq(1).after("Return to <a href=\"/forum/\">Overview</a> <a href=\"/forum/forum/bike-chat\">Bike Forum</a> <a href=\"/forum/forum/off-topic\">Chat Forum</a>");
     }
 
     function fixNotifications() {
