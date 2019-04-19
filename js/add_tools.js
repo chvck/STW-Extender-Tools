@@ -130,6 +130,18 @@ jQuery(document).ready(function ($) {
         $('#bbpress-forums .bbp-pagination').after("Return to <a href=\"/forum/\">Overview</a> <a href=\"/forum/forum/bike-chat\">Bike Forum</a> <a href=\"/forum/forum/off-topic\">Chat Forum</a>");
     }
 
+    function fixNotifications() {
+        $('.notifications td.notification-description a').click(function (e) {
+            e.preventDefault();
+            var href = $(this).attr('href');
+            var actionStart = href.indexOf("/?action");
+            var postEnd = href.indexOf("#post");
+            var link = href.substring(0, actionStart);
+            var postNo = href.substring(postEnd, href.length);
+            document.location.href = link + "/" + postNo;
+        });
+    }
+
     function addSignature(signature) {
         if (signature != null && signature != '') {
             $('#bbp_reply_submit').click(function () {
@@ -164,7 +176,7 @@ jQuery(document).ready(function ($) {
             addSignature(signature);
         }
         backToForumTops();
-
+        fixNotifications();
     });
 });
 
